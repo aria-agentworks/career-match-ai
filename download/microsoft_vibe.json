@@ -1,0 +1,47 @@
+[
+  {
+    "url": "https://github.com/microsoft/VibeVoice",
+    "name": "microsoft/VibeVoice: Open-Source Frontier Voice AI - GitHub",
+    "snippet": "VibeVoice is a family of open-source frontier voice AI models that includes both Text-to-Speech (TTS) and Automatic Speech Recognition (ASR) ...",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://microsoft.github.io/VibeVoice",
+    "name": "VibeVoice - Microsoft Open Source",
+    "snippet": "VibeVoice is a novel framework designed for generating expressive, long-form, multi-speaker conversational audio, such as podcasts, from text. It addresses ...",
+    "host_name": "microsoft.github.io",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/microsoft/VibeVoice/blob/main/docs/vibevoice-tts.md",
+    "name": "VibeVoice/docs/vibevoice-tts.md at main · microsoft/VibeVoice · GitHub",
+    "snippet": "VibeVoice-TTS is a long-form, multi-speaker text-to-speech model designed to generate expressive conversational audio such as podcasts from text. Missing: STT | Show results with: STT",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://huggingface.co/microsoft/VibeVoice-1.5B",
+    "name": "microsoft/VibeVoice-1.5B - Hugging Face",
+    "snippet": "VibeVoice is a novel framework designed for generating expressive, long-form, multi-speaker conversational audio, such as podcasts, from text.",
+    "host_name": "huggingface.co",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/vibevoice-community/VibeVoice",
+    "name": "VibeVoice: Expressive, longform conversational speech  - GitHub",
+    "snippet": "VibeVoice-1.5B/7B: Full-featured ... Missing: STT | Show results with: STT",
+    "host_name": "github.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  }
+]

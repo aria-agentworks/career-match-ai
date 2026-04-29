@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --text: #111827; --text-sub: #4B5563; --text-muted: #9CA3AF;
+    --bg: #FFFFFF; --surface: #F8FAFC; --border: #E2E8F0;
+    --nvidia: #76B900; --nvidia-dark: #5a8f00;
+    --brain: #1E293B; --brain-light: #334155;
+    --agent: #EFF6FF; --agent-border: #3B82F6;
+    --caller: #F0FDF4; --caller-border: #10B981;
+    --commander: #F5F3FF; --commander-border: #8B5CF6;
+    --connector: #94A3B8; --connector-light: #CBD5E1;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+  #root { width: fit-content; min-width: 1200px; margin: 0 auto; padding: 40px; }
+
+  .arch-title { font-size: 26px; font-weight: 800; color: var(--brain); text-align: center; margin-bottom: 6px; letter-spacing: -0.5px; }
+  .arch-subtitle { font-size: 14px; color: var(--text-sub); text-align: center; margin-bottom: 36px; }
+
+  .layer { margin-bottom: 20px; border-radius: 14px; padding: 20px 24px; position: relative; }
+  .layer-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); margin-bottom: 14px; }
+
+  .brain-layer { background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); color: white; }
+  .brain-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 10px; }
+  .brain-title .nvidia-badge { background: var(--nvidia); color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; }
+  .brain-desc { font-size: 13px; color: #94A3B8; margin-bottom: 16px; max-width: 700px; }
+  .brain-modules { display: flex; gap: 12px; flex-wrap: wrap; }
+  .brain-module { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 10px 16px; font-size: 12px; font-weight: 500; color: #E2E8F0; }
+  .brain-module strong { color: #60A5FA; }
+
+  .layer-arrow { text-align: center; color: var(--connector); font-size: 22px; margin: 4px 0; padding: 4px 0; }
+
+  .agents-layer { background: var(--surface); border: 1.5px solid var(--border); }
+  .agents-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .agent-card {
+    background: white; border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 14px 16px; position: relative; transition: all 0.2s;
+  }
+  .agent-card:hover { border-color: var(--agent-border); box-shadow: 0 2px 8px rgba(59,130,246,0.1); }
+  .agent-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .agent-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .agent-icp { font-size: 11px; color: var(--text-sub); margin-bottom: 6px; line-height: 1.4; }
+  .agent-workflow { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+  .workflow-step { font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 3px; background: #F1F5F9; color: #475569; }
+  .workflow-arrow { font-size: 10px; color: var(--text-muted); }
+
+  .agent-1 { border-top: 3px solid #3B82F6; }
+  .agent-1 .agent-badge { background: #EFF6FF; color: #1E40AF; }
+  .agent-2 { border-top: 3px solid #06B6D4; }
+  .agent-2 .agent-badge { background: #ECFEFF; color: #155E75; }
+  .agent-3 { border-top: 3px solid #F59E0B; }
+  .agent-3 .agent-badge { background: #FFFBEB; color: #92400E; }
+  .agent-4 { border-top: 3px solid #EF4444; }
+  .agent-4 .agent-badge { background: #FEF2F2; color: #991B1B; }
+  .agent-5 { border-top: 3px solid #10B981; }
+  .agent-5 .agent-badge { background: #F0FDF4; color: #065F46; }
+  .agent-6 { border-top: 3px solid #8B5CF6; }
+  .agent-6 .agent-badge { background: #F5F3FF; color: #5B21B6; }
+  .agent-7 { border-top: 3px solid #EC4899; }
+  .agent-7 .agent-badge { background: #FDF2F8; color: #9D174D; }
+
+  .caller-layer { background: var(--caller); border: 1.5px solid var(--caller-border); }
+  .caller-content { display: flex; gap: 24px; align-items: flex-start; }
+  .caller-info { flex: 1; }
+  .caller-title { font-size: 18px; font-weight: 700; color: #065F46; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .caller-title .ms-badge { background: #F0FDF4; border: 1px solid #86EFAC; color: #166534; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+  .caller-desc { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; max-width: 700px; }
+  .caller-features { display: flex; gap: 10px; flex-wrap: wrap; }
+  .caller-feature { font-size: 11px; padding: 4px 10px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); border-radius: 6px; color: #065F46; font-weight: 500; }
+  .caller-flow { display: flex; gap: 6px; align-items: center; margin-top: 10px; }
+  .caller-flow-step { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 5px; background: white; border: 1px solid #BBF7D0; color: #166534; }
+
+  .commander-layer { background: var(--commander); border: 1.5px solid var(--commander-border); }
+  .commander-content { display: flex; gap: 24px; align-items: flex-start; }
+  .commander-info { flex: 1; }
+  .commander-title { font-size: 18px; font-weight: 700; color: #5B21B6; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .commander-title .meta-badge { background: #F5F3FF; border: 1px solid #C4B5FD; color: #5B21B6; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+  .commander-desc { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; max-width: 700px; }
+  .commander-phases { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .cmd-phase { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 5px; background: white; border: 1px solid #DDD6FE; color: #5B21B6; }
+
+  .enhance-layer { background: #FFFBEB; border: 1.5px solid #FCD34D; }
+  .enhance-title { font-size: 16px; font-weight: 700; color: #92400E; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .enhance-title .skill-badge { background: #FEF3C7; border: 1px solid #FCD34D; color: #92400E; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+  .enhance-desc { font-size: 12px; color: var(--text-sub); max-width: 700px; }
+  .enhance-skills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .enhance-skill { font-size: 10px; padding: 3px 8px; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); border-radius: 5px; color: #92400E; font-weight: 500; }
+
+  .legend { display: flex; gap: 20px; justify-content: center; margin-top: 24px; padding: 14px 20px; background: #F9FAFB; border-radius: 8px; border: 1px solid #E5E7EB; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-sub); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+  .footer { text-align: center; margin-top: 20px; font-size: 11px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+<div id="root">
+  <div class="arch-title">Aria Marketing Hub — Multi-Agent Architecture</div>
+  <div class="arch-subtitle">Per-Product Lead Agents | NVIDIA-Powered Brain | Microsoft Voice Caller | Revenue Commander</div>
+
+  <!-- LAYER 1: NVIDIA Brain -->
+  <div class="layer brain-layer">
+    <div class="layer-label">Shared Intelligence Layer</div>
+    <div class="brain-title">
+      NVIDIA Brain
+      <span class="nvidia-badge">NIM API</span>
+    </div>
+    <div class="brain-desc">Hybrid search pipeline: Keyword + Vector parallel search with RRF fusion, cosine re-ranking, deduplication. Powers all 7 product agents with embeddings, LLM reasoning, and company intelligence.</div>
+    <div class="brain-modules">
+      <div class="brain-module"><strong>NV-Embed v1</strong> — Vector Embeddings</div>
+      <div class="brain-module"><strong>Llama 3.1 405B</strong> — LLM Reasoning</div>
+      <div class="brain-module"><strong>Hybrid Search</strong> — Keyword + Vector + RRF</div>
+      <div class="brain-module"><strong>Query Expansion</strong> — Multi-angle search</div>
+      <div class="brain-module"><strong>Fusion Scoring</strong> — 5-signal weighted rank</div>
+      <div class="brain-module"><strong>Company Intel</strong> — Deep research engine</div>
+      <div class="brain-module"><strong>Email Generator</strong> — Hyper-personalized</div>
+    </div>
+  </div>
+
+  <div class="layer-arrow">&#x2193;&#x2193;&#x2193; Powers All Agents Below &#x2193;&#x2193;&#x2193;</div>
+
+  <!-- LAYER 2: 7 Product Lead Agents -->
+  <div class="layer agents-layer">
+    <div class="layer-label">Product Lead Agents — Each with Full Workflow (Leads &#x2192; Emails &#x2192; Closing)</div>
+    <div class="agents-grid">
+      <div class="agent-card agent-1">
+        <span class="agent-badge">Lead Agent #1</span>
+        <div class="agent-name">AriaAgent</div>
+        <div class="agent-icp">Marketing agencies, SaaS founders, growth hackers</div>
+        <div class="agent-workflow">
+          <span class="workflow-step">Discover</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Score</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Email</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Follow-up</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Close</span>
+        </div>
+      </div>
+      <div class="agent-card agent-2">
+        <span class="agent-badge">Lead Agent #2</span>
+        <div class="agent-name">Sales Intelligence MCP</div>
+        <div class="agent-icp">B2B SaaS sales teams, RevOps, sales leaders</div>
+        <div class="agent-workflow">
+          <span class="workflow-step">Discover</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Score</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Email</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Follow-up</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Close</span>
+        </div>
+      </div>
+      <div class="agent-card agent-3">
+        <span class="agent-badge">Lead Agent #3</span>
+        <div class="agent-name">SaaS Audit Scanner</div>
+        <div class="agent-icp">CTOs, security engineers, SaaS founders</div>
+        <div class="agent-workflow">
+          <span class="workflow-step">Discover</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Score</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Email</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Follow-up</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Close</span>
+        </div>
+      </div>
+      <div class="agent-card agent-4">
+        <span class="agent-badge">Lead Agent #4 &#x2605; NEW</span>
+        <div class="agent-name">ShipProof</div>
+        <div class="agent-icp">Ecommerce sellers: Amazon, Flipkart, eBay, Meesho, Myntra, Ajio, Shopify, Etsy</div>
+        <div class="agent-workflow">
+          <span class="workflow-step">Discover</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Score</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Email</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Follow-up</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Close</span>
+        </div>
+      </div>
+      <div class="agent-card agent-5">
+        <span class="agent-badge">Lead Agent #5</span>
+        <div class="agent-name">SparkBill</div>
+        <div class="agent-icp">Freelancers, agencies, consultants, SMBs</div>
+        <div class="agent-workflow">
+          <span class="workflow-step">Discover</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Score</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Email</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Follow-up</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Close</span>
+        </div>
+      </div>
+      <div class="agent-card agent-6">
+        <span class="agent-badge">Lead Agent #6</span>
+        <div class="agent-name">Naive AI Voice Agent</div>
+        <div class="agent-icp">Customer support teams, call centers, SMBs</div>
+        <div class="agent-workflow">
+          <span class="workflow-step">Discover</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Score</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Email</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Follow-up</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Close</span>
+        </div>
+      </div>
+      <div class="agent-card agent-7">
+        <span class="agent-badge">Lead Agent #7</span>
+        <div class="agent-name">Naive Landing Page</div>
+        <div class="agent-icp">Startups, marketers, agencies, indie hackers</div>
+        <div class="agent-workflow">
+          <span class="workflow-step">Discover</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Score</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Email</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Follow-up</span><span class="workflow-arrow">&#x2192;</span>
+          <span class="workflow-step">Close</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer-arrow">&#x2193; Phone Numbers Found &#x2193;</div>
+
+  <!-- LAYER 3: Caller Agent -->
+  <div class="layer caller-layer">
+    <div class="layer-label">Voice Outreach Layer</div>
+    <div class="caller-content">
+      <div class="caller-info">
+        <div class="caller-title">
+          Caller Agent
+          <span class="ms-badge">Microsoft VibeVoice (Open Source)</span>
+        </div>
+        <div class="caller-desc">Single shared voice agent that receives leads with phone numbers from any product agent. Generates personalized voice scripts per product, makes outbound calls via VibeVoice TTS, and reports outcomes back to Revenue Commander.</div>
+        <div class="caller-features">
+          <span class="caller-feature">Clone voice from 10s audio</span>
+          <span class="caller-feature">Generate 90min audio</span>
+          <span class="caller-feature">50+ languages</span>
+          <span class="caller-feature">Real-time streaming</span>
+          <span class="caller-feature">Runs locally (free)</span>
+          <span class="caller-feature">100% open source</span>
+        </div>
+        <div class="caller-flow">
+          <span class="caller-flow-step">Receive Lead</span>
+          <span style="color:#94A3B8; font-size:11px;">&#x2192;</span>
+          <span class="caller-flow-step">Generate Script</span>
+          <span style="color:#94A3B8; font-size:11px;">&#x2192;</span>
+          <span class="caller-flow-step">Synthesize Voice</span>
+          <span style="color:#94A3B8; font-size:11px;">&#x2192;</span>
+          <span class="caller-flow-step">Make Call</span>
+          <span style="color:#94A3B8; font-size:11px;">&#x2192;</span>
+          <span class="caller-flow-step">Report Result</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer-arrow">&#x2191; Reports Metrics &#x2191;</div>
+
+  <!-- LAYER 4: Revenue Commander -->
+  <div class="layer commander-layer">
+    <div class="layer-label">Orchestration and Oversight Layer</div>
+    <div class="commander-content">
+      <div class="commander-info">
+        <div class="commander-title">
+          Revenue Commander
+          <span class="meta-badge">Meta Agent</span>
+        </div>
+        <div class="commander-desc">The strategic oversight agent that monitors all 7 product agents + caller agent. Runs a cognitive loop: Observe pipeline health, Diagnose problems, Decide actions, Execute changes, Report outcomes. Allocates resources and identifies winning products.</div>
+        <div class="commander-phases">
+          <span class="cmd-phase">1. Observe</span>
+          <span style="color:#94A3B8; font-size:11px;">&#x2192;</span>
+          <span class="cmd-phase">2. Diagnose</span>
+          <span style="color:#94A3B8; font-size:11px;">&#x2192;</span>
+          <span class="cmd-phase">3. Decide</span>
+          <span style="color:#94A3B8; font-size:11px;">&#x2192;</span>
+          <span class="cmd-phase">4. Execute</span>
+          <span style="color:#94A3B8; font-size:11px;">&#x2192;</span>
+          <span class="cmd-phase">5. Report</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer-arrow">&#x2191; Content Enhancement &#x2191;</div>
+
+  <!-- LAYER 5: Social Media Brain -->
+  <div class="layer enhance-layer">
+    <div class="layer-label">Content Intelligence Enhancement</div>
+    <div class="enhance-title">
+      Social Media Brain
+      <span class="skill-badge">17 Claude Skills</span>
+    </div>
+    <div class="enhance-desc">Integrates charlie947's open-source social-media-skills framework (MIT License). Enables each product agent to generate platform-specific content, voice-profile matching, and social proof materials to support email and phone outreach with higher quality messaging.</div>
+    <div class="enhance-skills">
+      <span class="enhance-skill">Voice &amp; Profile Setup</span>
+      <span class="enhance-skill">Hook &amp; Post Generation</span>
+      <span class="enhance-skill">Carousel Maker</span>
+      <span class="enhance-skill">Reels Scripter</span>
+      <span class="enhance-skill">Niche Research</span>
+      <span class="enhance-skill">Content Planning</span>
+      <span class="enhance-skill">Analytics Insights</span>
+      <span class="enhance-skill">Thumbnail Ideas</span>
+      <span class="enhance-skill">Infographics</span>
+      <span class="enhance-skill">Graphic Prompts</span>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#76B900;"></div> NVIDIA Brain (Shared)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3B82F6;"></div> Product Lead Agents (7x)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#10B981;"></div> Caller Agent (Shared)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#8B5CF6;"></div> Revenue Commander (Meta)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#F59E0B;"></div> Social Media Brain</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#EF4444;"></div> ShipProof (NEW)</div>
+  </div>
+
+  <div class="footer">Aria Marketing Hub v2.0 — Multi-Agent Revenue Engine Architecture</div>
+</div>
+</body>
+</html>

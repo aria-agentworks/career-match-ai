@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/automations/commander",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/automations/process-sequences",
+      "schedule": "0 18 * * *"
+    }
+  ]
+}

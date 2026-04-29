@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MarketingPlan {
+  id          String      @id @default(cuid())
+  name        String
+  goal        String
+  status      String      @default("draft")
+  rawResponse String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  steps       PlanStep[]
+}
+
+model PlanStep {
+  id           String        @id @default(cuid())
+  planId       String
+  order        Int
+  actionSlug   String
+  platform     String
+  product      String
+  topic        String
+  params       String
+  status       String        @default("pending")
+  errorMessage String?
+  resultData   String?
+  content      ContentPiece?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  plan         MarketingPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@index([planId])
+  @@index([status])
+}
+
+model ContentPiece {
+  id           String    @id @default(cuid())
+  platform     String
+  product      String
+  topic        String
+  title        String?
+  body         String
+  hashtags     String?
+  scheduledAt  DateTime?
+  postedAt     DateTime?
+  postStatus   String    @default("draft")
+  postedUrl    String?
+  externalId   String?
+  errorMessage String?
+  planStepId   String?   @unique
+  planStep     PlanStep? @relation(fields: [planStepId], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([platform])
+  @@index([postStatus])
+}
+
+model PostHistory {
+  id           String   @id @default(cuid())
+  platform     String
+  product      String
+  actionSlug   String
+  title        String?
+  body         String
+  postedAt     DateTime @default(now())
+  postedUrl    String?
+  externalId   String?
+  status       String   @default("success")
+  errorMessage String?
+  triggerType  String   @default("manual")
+  createdAt    DateTime @default(now())
+
+  @@index([platform])
+  @@index([postedAt])
+}
+
+model AutoPostConfig {
+  id             String    @id @default(cuid())
+  enabled        Boolean   @default(false)
+  platforms      String    @default("twitter,linkedin")
+  products       String    @default("AriaAgent")
+  postFrequency  String    @default("daily")
+  postTime       String    @default("09:00")
+  timezone       String    @default("UTC")
+  lastRunAt      DateTime?
+  nextRunAt      DateTime?
+  lastRunStatus  String?
+  lastRunMessage String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}

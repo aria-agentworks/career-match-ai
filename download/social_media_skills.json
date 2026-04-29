@@ -1,0 +1,47 @@
+[
+  {
+    "url": "https://github.com/charlie947/social-media-skills/blob/main/README.md",
+    "name": "README.md - charlie947/social-media-skills",
+    "snippet": "Social Media Skills for AI Agents . The complete set of Claude skills behind Charlie Hills' content system. ... AI-generated infographic based on the post content.\nWhat are Skills? Skills are markdown files that give AI agents specialised knowledge and workflows for specific tasks. When you install these in your project, Claude recognises when you're working on a social media task and applies the right patterns, voice rules, and platform constraints.",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/ComposioHQ/awesome-claude-skills",
+    "name": "ComposioHQ/awesome-claude-skills",
+    "snippet": "Skill Creator - Provides guidance for creating effective Claude Skills that extend capabilities with specialized knowledge, workflows, and tool integrations.",
+    "host_name": "github.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://claudemarketplaces.com/skills/inferen-sh/skills/ai-social-media-content",
+    "name": "Ai Social Media Content - Skills - Claude Code Marketplaces",
+    "snippet": "The ai-social-media-content skill generates platform-specific social media content including images, videos, captions, and hashtags for TikTok, Instagram, ...",
+    "host_name": "claudemarketplaces.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://charliehills.substack.com/p/the-simple-350k-follower-ai-content",
+    "name": "The 17 Claude skills behind 350k followers - MarTech AI",
+    "snippet": "If you are here for the Claude skills , scroll to the end or grab them all here: https://github.com/charlie947/social-media-skills. Subscribe ...\nProject files: written by skills, live in one specific project Step 1: Create a Cowork project Open the Claude desktop app and switch to Cowork. Start a new project and name it something like “Content system” or “Newsletter writer”. This project is the home for your voice files, your instructions, and every future draft.",
+    "host_name": "charliehills.substack.com",
+    "rank": 3,
+    "date": "Apr 26, 2026",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/blacktwist/social-media-skills",
+    "name": "blacktwist/social-media-skills: AI agent",
+    "snippet": "8 days ago — AI agent skills for social media content strategy, creation , and analysis across text-first platforms - blacktwist/ social - media - skills .",
+    "host_name": "github.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  }
+]
